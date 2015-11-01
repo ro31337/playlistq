@@ -1,0 +1,12 @@
+<form {{action "search" on="submit"}}>
+  {{input value=queryField}}
+  <input type="submit" value="Search"/>
+</form>
+<ul>
+{{#each content.items as |item|}}
+  <li>
+    <img src="{{item.snippet.thumbnails.default.url}}"/>
+    {{item.snippet.title}}
+  </li>
+{{/each}}
+</ul>

@@ -6,8 +6,14 @@ export default Ember.Route.extend({
 
   beforeModel() {
     return Ember.RSVP.all([
-        this.get('googleApi').setup(),
         this.get('youtubeApi').setup(),
+        this.get('googleApi').setup()
     ]);
+  },
+
+  setupController(controller) {
+    // Why doesn't the Youtube video show, if called `play` action is triggered
+    // immediately?
+    Ember.run.next(controller, 'send', 'play');
   }
 });

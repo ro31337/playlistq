@@ -1,7 +1,17 @@
-<div id="player">Player</div>
-<nav>
-  {{#link-to 'playlist'}}Playlist{{/link-to}}
-  {{#link-to 'search'}}Search{{/link-to}}
-</nav>
+<div class="container">
 
-{{outlet}}
+  <div class="jumbotron flex-center">
+    <div id="player"></div>
+  </div>
+
+  <nav class="navbar navbar-default">
+    <div class="container-fluid flex">
+      <ul class="nav navbar-nav">
+        <li>{{#link-to 'playlist'}}Playlist{{/link-to}}</li>
+        <li>{{#link-to 'search'}}Search{{/link-to}}</li>
+      </ul>
+    </div>
+  </nav>
+
+  {{outlet}}
+</div>

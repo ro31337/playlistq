@@ -6,8 +6,8 @@ export default Ember.Service.extend({
 
     return new Ember.RSVP.Promise(function(resolve) {
       window.handleGAPILoad = function() {
-        gapi.client.setApiKey('AIzaSyAQAsKse44IZRbqHWeKq3WyBxyTApbZNNQ');
-        gapi.client.load('youtube', 'v3', resolve);
+        window.gapi.client.setApiKey('AIzaSyAQAsKse44IZRbqHWeKq3WyBxyTApbZNNQ');
+        window.gapi.client.load('youtube', 'v3', resolve);
       };
 
       $.getScript(url);

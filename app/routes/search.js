@@ -16,7 +16,7 @@ export default Ember.Route.extend({
       q: params.query,
       part: 'snippet',
       type: 'video',
-      maxResults: 10,
+      maxResults: 6,
     });
 
     return new Ember.RSVP.Promise(function(resolve) {

@@ -1,14 +1,19 @@
 body {
-  padding-top: 30px;
+  padding-top: 16px;
 }
 
-.container {
-  max-width: 630px;
+.active {
+  font-weight: bold;
 }
 
-.jumbotron {
-  height: 420px;
-  font-size: 30px;
+img {
+  height: 100px;
+}
+
+.player {
+  padding: 32px;
+  background: #eee;
+  border-radius: 6px;
 }
 
 .flex {
@@ -37,14 +42,14 @@ body {
   -ms-flex-align: center;
 }
 
-/* Horizontal align. */
+/* Horizontal align center. */
 .flex-justify-center {
   justify-content: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
 }
 
-/* Vertical align. */
+/* Vertical align center. */
 .flex-align-center {
   align-items: center;
   -webkit-box-align: center;
@@ -53,10 +58,23 @@ body {
   -ms-flex-align: center;
 }
 
+/* Vertical align. */
+.flex-align-top {
+  align-items: flex-start;
+  -webkit-box-align: flex-start;
+  -webkit-align-items: flex-start;
+  -moz-box-align: flex-start;
+  -ms-flex-align: flex-start;
+}
+
 .flex-column {
   flex-direction: column;
   -moz-box-direction: column;
   -webkit-flex-direction: column;
   -ms-flexbox-direction: column;
   -ms-flex-direction: column;
+}
+
+.spinner {
+  font-size: 32px;
 }

@@ -2,11 +2,18 @@
   {{input value=queryField}}
   <input type="submit" value="Search"/>
 </form>
-<ul>
-{{#each content.items as |item|}}
-  <li>
-    <img src="{{item.snippet.thumbnails.default.url}}"/>
-    {{item.snippet.title}}
-  </li>
-{{/each}}
+<ul class="list-group">
+  {{#each content.items as |item|}}
+    <li class="list-group-item">
+      <img src="{{item.snippet.thumbnails.medium.url}}"/>
+      {{item.snippet.title}}
+      <button
+        {{action 'addVideo'
+                  item.id.videoId
+                  item.snippet.title
+                  item.snippet.thumbnails.medium.url}}>
+        Add
+      </button>
+    </li>
+  {{/each}}
 </ul>

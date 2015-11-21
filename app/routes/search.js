@@ -12,15 +12,15 @@ export default Ember.Route.extend({
       return [];
     }
 
-    var request = gapi.client.youtube.search.list({
+    let request = gapi.client.youtube.search.list({
       q: params.query,
       part: 'snippet',
       type: 'video',
       maxResults: 6,
     });
 
-    return new Ember.RSVP.Promise(function(resolve) {
-      request.execute(function(response) {
+    return new Ember.RSVP.Promise(resolve => {
+      request.execute(response => {
         resolve(response);
       });
     });

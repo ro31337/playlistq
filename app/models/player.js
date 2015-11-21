@@ -1,9 +1,12 @@
 import DS from 'ember-data';
 
 export default DS.Model.extend({
-  videoId: DS.attr('string'),
   state: DS.attr('string'),
-  time: DS.attr('number'),
-  timeUpdatedAt: DS.attr('number'),
-  playlist: DS.belongsTo('playlist')
+  startTime: DS.attr('number'),
+  video: DS.belongsTo('video', { async: true }),
+  isPaused: Ember.computed.equal('state', 'paused'),
+  isPlaying: Ember.computed.equal('state', 'playing'),
+  isEnded: Ember.computed.equal('state', 'ended'),
+  isBuffering: Ember.computed.equal('state', 'buffering'),
+  isCued: Ember.computed.equal('state', 'cued')
 });

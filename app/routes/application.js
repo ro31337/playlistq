@@ -12,8 +12,46 @@ export default Ember.Route.extend({
   },
 
   setupController(controller) {
-    // Why doesn't the Youtube video show, if called `play` action is triggered
-    // immediately?
-    Ember.run.next(controller, 'send', 'play');
+    Playlistq.store = this.store;
+    Playlistq.controller = controller;
+    this.store.findAll('playlist', { limit: 1 }).then(playlists => {
+      Ember.run.later(() => {
+        this.transitionTo('playlist', playlists.get('lastObject.id'));
+      }, 1000);
+    });
+  },
+
+  actions: {
+    addVideo(videoId, title, image) {
+      let player,
+          playlist = this.controller.get('playlist'),
+          video = this.store.createRecord('video', {
+            videoId: videoId,
+            title: title,
+            image: image,
+          });
+
+      if (!playlist) {
+        playlist = this.store.createRecord('playlist');
+        player = this.store.createRecord('player');
+        playlist.set('player', player);
+        player.set('video', video);
+      }
+
+      playlist.get('videos').then(videos => {
+        videos.addObject(video);
+        video.save().then(() => {
+          if (player) {
+            player.save().then(() => {
+              playlist.save();
+            });
+          } else {
+            playlist.save();
+          }
+        });
+      });
+
+      this.transitionTo('playlist', playlist);
+    }
   }
 });

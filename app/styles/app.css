@@ -78,3 +78,10 @@ img {
 .spinner {
   font-size: 32px;
 }
+
+.navbar-form-custom {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+}

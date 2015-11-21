@@ -4,12 +4,20 @@
     <nav class="navbar navbar-default">
       <ul class="nav navbar-nav">
         {{#if playlist}}
-          <li>{{#link-to 'playlist' playlist.id}}Playlist{{/link-to}}</li>
+          <li>
+            {{#link-to 'playlist' playlist.id class="navbar-brand"}}
+              PlaylistQ
+            {{/link-to}}
+          </li>
         {{else}}
-          <li>{{#link-to 'index'}}Playlist{{/link-to}}</li>
+          <li>
+            {{#link-to 'index' class="navbar-brand"}}
+              PlaylistQ
+            {{/link-to}}
+          </li>
         {{/if}}
       </ul>
-      <form class="navbar-form" {{action "search" query on="submit"}}>
+      <form class="navbar-form-custom" {{action "search" query on="submit"}}>
         <div class="input-group">
           {{input value=query class="form-control" placeholder="Search"}}
           <span class="input-group-btn">

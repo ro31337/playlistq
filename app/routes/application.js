@@ -52,6 +52,10 @@ export default Ember.Route.extend({
       });
 
       this.transitionTo('playlist', playlist);
+    },
+
+    search(query) {
+      this.transitionTo('search', {queryParams: {query: query}});
     }
   }
 });

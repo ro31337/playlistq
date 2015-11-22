@@ -12,7 +12,7 @@ export default Ember.Route.extend({
       return [];
     }
 
-    let request = gapi.client.youtube.search.list({
+    let request = window.gapi.client.youtube.search.list({
       q: params.query,
       part: 'snippet',
       type: 'video',

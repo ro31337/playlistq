@@ -12,5 +12,17 @@ export default Ember.Service.extend({
 
       $.getScript(url);
     });
+  },
+
+  suggestUrl: "http://suggestqueries.google.com/complete/search",
+
+  suggest(query) {
+    return new Ember.RSVP.Promise(function(resolve, error) {
+      $.getJSON(this.suggestUrl, {
+        ds: 'yt',
+        client: 'youtube',
+        q: query
+      }, resolve, error);
+    });
   }
 });

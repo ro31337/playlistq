@@ -65,5 +65,11 @@ export default Ember.Controller.extend({
     if (videoId && player.get('data.video_id') !== videoId) {
       player.cueVideoById({videoId: videoId});
     }
-  })
+  }),
+
+  actions: {
+    setCurrentVideo(videoId) {
+      this.get('model').set('currentVideoId', videoId).save();
+    }
+  }
 });

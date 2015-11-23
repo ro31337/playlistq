@@ -1,6 +1,6 @@
 <ul class="list-group">
-  {{#each playlist.videos as |video|}}
-    <li class="list-group-item">
+  {{#each model.videos as |video|}}
+    <li class="list-group-item" {{action "setCurrentVideo" video.videoId}}>
       <img src="{{video.image}}" class="img-rounded"> {{video.title}}
     </li>
   {{/each}}

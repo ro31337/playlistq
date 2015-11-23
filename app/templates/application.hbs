@@ -1,22 +1,22 @@
 <div class="container">
 <div class="row">
-  <div class="col-md-5">
+  <div class="player col-md-7 col-md-push-5 flex-center">
+    <div id="player"></div>
+  </div>
+
+  <div class="col-md-5 col-md-pull-7">
     <nav class="navbar navbar-default">
-      <ul class="nav navbar-nav">
+      <div class="navbar-header">
         {{#if playlist}}
-          <li>
-            {{#link-to 'playlist' playlist.id class="navbar-brand"}}
-              PlaylistQ
-            {{/link-to}}
-          </li>
+          {{#link-to 'playlist' playlist.id class="navbar-brand"}}
+            PlaylistQ
+          {{/link-to}}
         {{else}}
-          <li>
-            {{#link-to 'index' class="navbar-brand"}}
-              PlaylistQ
-            {{/link-to}}
-          </li>
+          {{#link-to 'index' class="navbar-brand"}}
+            PlaylistQ
+          {{/link-to}}
         {{/if}}
-      </ul>
+      </div>
       <form class="navbar-form-custom" {{action "search" query on="submit"}}>
         <div class="input-group">
           {{input value=query class="form-control" placeholder="Search"}}
@@ -30,10 +30,6 @@
     </nav>
 
     {{outlet}}
-  </div>
-
-  <div class="player col-md-7 flex-center">
-    <div id="player"></div>
   </div>
 </div>
 </div>

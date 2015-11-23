@@ -85,3 +85,10 @@ img {
   padding-left: 15px;
   padding-right: 15px;
 }
+
+.no-playlist {
+  padding: 20px 25px;
+  font-size: x-large;
+  color: #bbb;
+  text-align: center;
+}

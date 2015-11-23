@@ -1,15 +1,18 @@
-<ul class="list-group">
+<div class="list-group">
   {{#each content.items as |item|}}
-    <li class="list-group-item">
-      <img src="{{item.snippet.thumbnails.medium.url}}"/>
-      {{item.snippet.title}}
-      <button
-        {{action 'addVideo'
-                  item.id.videoId
-                  item.snippet.title
-                  item.snippet.thumbnails.medium.url}}>
-        Add
-      </button>
-    </li>
+    <div class="media">
+      <div class="media-left">
+        <img src="{{item.snippet.thumbnails.medium.url}}"/>
+      </div>
+      <div class="media-body">
+        <h5 class="media-heading">{{item.snippet.title}}</h5>
+        <button
+           {{action 'addVideo'
+                    item.id.videoId
+                    item.snippet.title
+                    item.snippet.thumbnails.medium.url}}>Add
+        </button>
+      </div>
+    </div>
   {{/each}}
-</ul>
+</div>

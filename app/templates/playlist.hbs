@@ -1,7 +1,12 @@
-<ul class="list-group">
+<div class="list-group">
   {{#each model.videos as |video|}}
-    <li class="list-group-item" {{action "setCurrentVideo" video.videoId}}>
-      <img src="{{video.image}}" class="img-rounded"> {{video.title}}
-    </li>
+    <div class="media" {{action "setCurrentVideo" video.videoId}}>
+      <div class="media-left">
+        <img src="{{video.image}}" class="img-rounded media-object">
+      </div>
+      <div class="media-body">
+        <h5 class="media-heading">{{video.title}}</h5>
+      </div>
+    </div>
   {{/each}}
-</ul>
+</div>

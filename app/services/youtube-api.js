@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import LocalPlayer from '../objects/local-player';
 
 export default Ember.Service.extend({
   setup() {
@@ -8,5 +9,9 @@ export default Ember.Service.extend({
       window.onYouTubeIframeAPIReady = resolve;
       $.getScript(url);
     });
-  }
+  },
+
+  player: Ember.computed(function() {
+    return LocalPlayer.create();
+  })
 });

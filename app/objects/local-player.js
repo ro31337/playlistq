@@ -1,33 +1,50 @@
 import Ember from 'ember';
 
 export default Ember.Object.extend(Ember.Evented, {
-  isLoaded: false,
+  isReady: false,
   isPaused: Ember.computed.equal('state', 'paused'),
   isPlaying: Ember.computed.equal('state', 'playing'),
   isEnded: Ember.computed.equal('state', 'ended'),
   isBuffering: Ember.computed.equal('state', 'buffering'),
   isCued: Ember.computed.equal('state', 'cued'),
+  proxyMethods: [
+    'cueVideoById', 'pauseVideo', 'playVideo', 'mute', 'seekTo', 'unMute'],
 
-  videoIdObserver: Ember.observer('videoId', function() {
-    let videoId = this.get('videoId');
-    if (videoId) {
-      this.set('isLoaded', false);
+  initPlayer: function() {
+    this.set('player', new YT.Player('player', {
+      events: {
+        onReady: this._onReady.bind(this),
+        onStateChange: this._onStateChange.bind(this),
+      }
+    }));
+  }.on('init'),
 
-      let player = new YT.Player('player', {
-        videoId: videoId,
-        events: {
-          onReady: this._onReady.bind(this),
-          onStateChange: this._onStateChange.bind(this),
-        }
-      });
+  promise: Ember.computed(function() {
+    return new Ember.RSVP.Promise(resolve => {
+      if (this.get('isReady')) {
+        resolve(player)
+      } else {
+        this.one('didReady', resolve);
+      }
+    });
+  }),
 
-      this.set('player', player);
-    }
-  }).on('init'),
+  data: Ember.computed('isReady', 'state', function() {
+    let player = this.get('player');
+    return player.getVideoData && player.getVideoData();
+  }),
 
   _onReady() {
-    this.set('isLoaded', true);
-    this.trigger('didLoad', this);
+    this._proxyMethods();
+    this.set('isReady', true);
+    this.trigger('didReady', this);
+  },
+
+  _proxyMethods() {
+    let player = this.get('player');
+    this.get('proxyMethods').forEach(method => {
+      this[method] = player[method].bind(player);
+    });
   },
 
   _onStateChange(event) {
@@ -41,6 +58,8 @@ export default Ember.Object.extend(Ember.Evented, {
       this.set('state', 'buffering');
     } else if (event.data === YT.PlayerState.CUED) {
       this.set('state', 'cued');
+    } else {
+      this.set('state', undefined);
     }
   }
 });

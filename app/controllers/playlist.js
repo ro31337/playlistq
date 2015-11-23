@@ -1,58 +1,69 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  // Match local player time with global player time.
+  youtubeApi: Ember.inject.service(),
+
+  // Match playlist time with player time.
   // TODO: Sync client clocks with server clock.
-  syncLocalPlayerTime() {
-    let startTime = this.get('player.startTime');
-    let localPlayer = this.get('localPlayer');
+  syncPlayerTime() {
+    let startTime = this.get('model.startTime');
+    let player = this.get('youtubeApi.player');
     let currentTime = Date.now() - startTime;
 
     if (currentTime >= 0) {
-      localPlayer.get('player').seekTo(currentTime / 1000);
-      localPlayer.get('player').unMute();
+      player.seekTo(currentTime / 1000);
+      player.unMute();
     } else {
       let syncPid = Ember.run.later(() => {
-        localPlayer.get('player').seekTo(1);
-        localPlayer.get('player').unMute();
+        player.seekTo(0);
+        player.unMute();
       }, -currentTime);
       this.set('syncPid', syncPid);
     }
   },
 
-  // Match local player state with global player state.
-  syncLocalPlayerState: Ember.observer('player.state', function() {
-    let player = this.get('player');
-    let localPlayer = this.get('localPlayer');
+  // Match player state with playlist state.
+  syncPlayerState: Ember.observer('model.state', function() {
+    let playlist = this.get('model');
+    let player = this.get('youtubeApi.player');
 
-    if (player.get('state') !== localPlayer.get('state')) {
-      if (player.get('isPlaying')) {
-        localPlayer.get('player').mute();
-        localPlayer.get('player').playVideo();
-        this.syncLocalPlayerTime();
-      } else if (player.get('isPaused')) {
-        localPlayer.get('player').pauseVideo();
+    if (playlist.get('state') !== player.get('state')) {
+      if (playlist.get('isPlaying')) {
+        player.mute();
+        player.playVideo();
+        this.syncPlayerTime();
+      } else if (playlist.get('isPaused')) {
+        player.pauseVideo();
       }
     }
   }),
 
-  // Match global player state with local player time.
-  syncGlobalPlayerState: Ember.observer('localPlayer.state', function() {
-    let player = this.get('player');
-    let localPlayer = this.get('localPlayer');
+  // Match playlist state with player state.
+  syncGlobalPlayerState: Ember.observer('youtubeApi.player.state', function() {
+    let playlist = this.get('model');
+    let player = this.get('youtubeApi.player');
 
-    if (player.get('state') !== localPlayer.get('state')) {
-      if (localPlayer.get('isPlaying')) {
-        localPlayer.get('player').mute();
-        player.setProperties({
+    if (playlist.get('state') !== player.get('state')) {
+      if (player.get('isPlaying')) {
+        player.mute();
+        playlist.setProperties({
           state: 'playing',
           startTime: Date.now() + 1000
         }).save().then(() => {
-          this.syncLocalPlayerTime();
+          this.syncPlayerTime();
         });
-      } else if (localPlayer.get('isPaused')) {
-        player.set('state', 'paused').save();
+      } else if (player.get('isPaused')) {
+        playlist.set('state', 'paused').save();
       }
     }
   }),
+
+  setCurrentVideo: Ember.observer('model.currentVideoId', function() {
+    let videoId = this.get('model.currentVideoId');
+    let player = this.get('youtubeApi.player');
+
+    if (videoId && player.get('data.video_id') !== videoId) {
+      player.cueVideoById({videoId: videoId});
+    }
+  })
 });

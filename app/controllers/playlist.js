@@ -54,12 +54,18 @@ export default Ember.Controller.extend({
         });
       } else if (player.get('isPaused')) {
         playlist.set('state', 'paused').save();
+      } else if (player.get('isEnded')) {
+        playlist.setNextVideo().then(() => {
+          playlist.save().then(() => {
+            player.playVideo();
+          });
+        });
       }
     }
   }),
 
-  setCurrentVideo: Ember.observer('model.currentVideoId', function() {
-    let videoId = this.get('model.currentVideoId');
+  setCurrentVideo: Ember.observer('model.currentVideo.videoId', function() {
+    let videoId = this.get('model.currentVideo.videoId');
     let player = this.get('youtubeApi.player');
 
     if (videoId && player.get('data.video_id') !== videoId) {
@@ -68,8 +74,8 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    setCurrentVideo(videoId) {
-      this.get('model').set('currentVideoId', videoId).save();
+    setCurrentVideo(video) {
+      this.get('model').set('currentVideo', video).save();
     }
   }
 });

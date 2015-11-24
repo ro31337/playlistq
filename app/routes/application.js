@@ -35,8 +35,16 @@ export default Ember.Route.extend({
       }
 
       playlist.get('videos').then(videos => {
+        let previousVideo = videos.get('lastObject');
         videos.addObject(video);
-        video.save().then(() => {
+        video.save().then(video => {
+          if (previousVideo) {
+            // Maintain link list used to determine what video to play next.
+            previousVideo.set('nextVideo', video).save();
+          } else {
+            // No previous video means videos list is empty.
+            playlist.set('currentVideo', video);
+          }
           playlist.save();
         });
       });

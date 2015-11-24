@@ -50,16 +50,22 @@ export default Ember.Object.extend(Ember.Evented, {
   _onStateChange(event) {
     if (event.data === YT.PlayerState.ENDED) {
       this.set('state', 'ended');
+      console.log('state', 'ended');
     } else if (event.data === YT.PlayerState.PLAYING) {
       this.set('state', 'playing');
+      console.log('state', 'playing');
     } else if (event.data === YT.PlayerState.PAUSED) {
       this.set('state', 'paused');
+      console.log('state', 'paused');
     } else if (event.data === YT.PlayerState.BUFFERING) {
       this.set('state', 'buffering');
+      console.log('state', 'buffering');
     } else if (event.data === YT.PlayerState.CUED) {
       this.set('state', 'cued');
+      console.log('state', 'cued');
     } else {
       this.set('state', undefined);
+      console.log('state', 'undefined');
     }
   }
 });

@@ -2,11 +2,12 @@
   {{#each content.items as |item|}}
     <div class="media">
       <div class="media-left">
-        <img src="{{item.snippet.thumbnails.medium.url}}"/>
+        <img class="img-rounded media-object"
+              src="{{item.snippet.thumbnails.medium.url}}"/>
       </div>
       <div class="media-body">
         <h5 class="media-heading">{{item.snippet.title}}</h5>
-        <button
+        <button type="button" class="btn btn-primary"
            {{action 'addVideo'
                     item.id.videoId
                     item.snippet.title

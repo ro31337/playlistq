@@ -2,7 +2,7 @@
   {{#each model.videos as |video|}}
     <div class="media" {{action "setCurrentVideo" video.videoId}}>
       <div class="media-left">
-        <img src="{{video.image}}" class="img-rounded media-object">
+        <img class="img-rounded media-object" src="{{video.image}}"/>
       </div>
       <div class="media-body">
         <h5 class="media-heading">{{video.title}}</h5>

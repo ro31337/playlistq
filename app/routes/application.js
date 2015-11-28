@@ -52,8 +52,14 @@ export default Ember.Route.extend({
       this.transitionTo('playlist', playlist);
     },
 
-    search(query) {
-      this.transitionTo('search', {queryParams: {query: query}});
+    search(query, pageToken) {
+      this.transitionTo('search', {
+        queryParams: {
+          query: query,
+          // Bug? pageToken === undefined routes to ?pageToken=undefined
+          pageToken: pageToken || null
+        }
+      });
     }
   }
 });

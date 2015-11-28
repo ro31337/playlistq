@@ -5,6 +5,9 @@ export default Ember.Route.extend({
   queryParams: {
     query: {
       refreshModel: true
+    },
+    pageToken: {
+      refreshModel: true
     }
   },
 
@@ -21,22 +24,24 @@ export default Ember.Route.extend({
     }
 
     let query = this.cleanQuery(params.query);
-    let cached = this.cache.get(query);
+    let cacheKey = this.getCacheKey(query, params.pageToken);
+    let cached = this.cache.get(cacheKey);
 
     if (cached) {
-      return cached
+      return cached;
     }
 
     let request = window.gapi.client.youtube.search.list({
       q: query,
       part: 'snippet',
       type: 'video',
+      pageToken: params.pageToken,
       maxResults: 6,
     });
 
     return new Ember.RSVP.Promise(resolve => {
       request.execute(response => {
-        this.cache.set(query, response);
+        this.cache.set(cacheKey, response);
         resolve(response);
       });
     });
@@ -47,5 +52,13 @@ export default Ember.Route.extend({
   // learn!
   cleanQuery(query) {
     return query.trim().toLowerCase().split(/[\s,.]+/).join(' ');
+  },
+
+  // Generate a key for the LRU cache based on the query and page.
+  getCacheKey(query, pageToken) {
+    if (pageToken) {
+      return `${ query }-${ pageToken }`;
+    }
+    return query;
   }
 });

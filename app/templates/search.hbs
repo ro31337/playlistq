@@ -17,3 +17,13 @@
     </div>
   {{/each}}
 </div>
+<div class="btn-group" role="group">
+  {{#if content.prevPageToken}}
+    <button {{action "search" query content.prevPageToken on="click"}}
+      type="button" class="btn btn-default">Previous</button>
+  {{/if}}
+  {{#if content.nextPageToken}}
+    <button {{action "search" query content.nextPageToken on="click"}}
+      type="button" class="btn btn-default">Next</button>
+  {{/if}}
+</div>

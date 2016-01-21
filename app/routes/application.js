@@ -11,16 +11,6 @@ export default Ember.Route.extend({
     ]);
   },
 
-  setupController(controller) {
-    this.store.findAll('playlist', { limit: 1 }).then(playlists => {
-      Ember.run.later(() => {
-        if (playlists.get('lastObject.id')) {
-          this.transitionTo('playlist', playlists.get('lastObject.id'));
-        }
-      }, 1000);
-    });
-  },
-
   actions: {
     addVideo(videoId, title, image) {
       let playlist = this.controller.get('playlist');

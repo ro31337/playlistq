@@ -49,11 +49,13 @@ export default Ember.Controller.extend({
         playlist.setProperties({
           state: 'playing',
           startTime: Date.now() + 1000
-        }).save().then(() => {
+        });
+        playlist.save().then(() => {
           this.syncPlayerTime();
         });
       } else if (player.get('isPaused')) {
-        playlist.set('state', 'paused').save();
+        playlist.set('state', 'paused')
+        playlist.save();
       } else if (player.get('isEnded')) {
         playlist.setNextVideo().then(() => {
           playlist.save().then(() => {
@@ -75,7 +77,8 @@ export default Ember.Controller.extend({
 
   actions: {
     setCurrentVideo(video) {
-      this.get('model').set('currentVideo', video).save();
+      this.get('model').set('currentVideo', video);
+      this.get('model').save();
     }
   }
 });
